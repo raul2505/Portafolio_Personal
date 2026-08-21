@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Lakehouse Gildemeister — Erick Jáuregui</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0a0f1a;
+    --panel: #10182a;
+    --panel-2: #0d1420;
+    --border: #223049;
+    --border-soft: rgba(255,255,255,0.07);
+    --text: #e7edf6;
+    --text-muted: #8b98b3;
+    --amber: #ffb454;
+    --green: #3ddc84;
+    --grid: rgba(255,255,255,0.05);
+    --radius: 4px;
+  }
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 100% 42px,
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 42px 100%,
+      var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a{ color: inherit; }
+  ::selection{ background: var(--amber); color: #0a0f1a; }
+  :focus-visible{ outline: 2px solid var(--amber); outline-offset: 3px; }
+  .mono{ font-family: 'JetBrains Mono', monospace; }
+  .wrap{ max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+
+  nav{ position: sticky; top:0; z-index: 50; backdrop-filter: blur(10px); background: rgba(10,15,26,0.82); border-bottom: 1px solid var(--border-soft); }
+  nav .wrap{ display:flex; align-items:center; justify-content:space-between; height: 64px; }
+  .brand{ font-family:'JetBrains Mono', monospace; font-size: 14px; letter-spacing: 0.03em; display:flex; align-items:center; gap:8px; text-decoration:none; color: var(--text); }
+  .brand .dot{ width:7px; height:7px; border-radius:50%; background: var(--green); box-shadow: 0 0 8px var(--green); flex:none; }
+  .back-link{ font-family:'JetBrains Mono', monospace; font-size: 13px; color: var(--text-muted); text-decoration:none; display:flex; align-items:center; gap:8px; }
+  .back-link:hover{ color: var(--amber); }
+
+  header.hero{ padding: 64px 0 48px; }
+  .eyebrow{ font-family:'JetBrains Mono', monospace; font-size: 13px; color: var(--amber); letter-spacing: 0.06em; margin-bottom: 18px; }
+  .badge{ font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; padding: 5px 10px; border-radius: 3px; border: 1px solid currentColor; color: #7fb0ff; display:inline-block; margin-bottom: 18px; }
+  h1.ptitle{ font-family:'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(30px, 5vw, 46px); line-height: 1.08; letter-spacing: -0.01em; margin: 0 0 18px; max-width: 780px; }
+  .lede{ max-width: 680px; color: var(--text-muted); font-size: 16.5px; margin: 0 0 32px; }
+
+  .meta-strip{ display:grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--border-soft); border: 1px solid var(--border-soft); border-radius: var(--radius); overflow:hidden; margin-bottom: 8px; }
+  @media (min-width: 720px){ .meta-strip{ grid-template-columns: repeat(4,1fr); } }
+  .mcell{ background: var(--panel-2); padding: 16px 18px; }
+  .mcell .tlabel{ font-family:'JetBrains Mono', monospace; font-size: 10.5px; color: var(--text-muted); letter-spacing: 0.06em; margin-bottom: 7px; }
+  .mcell .tvalue{ font-size: 14px; font-weight: 600; }
+
+  section{ padding: 20px 0; border-top: 1px solid var(--border-soft); }
+  .section-tag{ font-family:'JetBrains Mono', monospace; font-size: 12px; color: var(--amber); letter-spacing: 0.08em; margin-bottom: 10px; }
+  h2{ font-family:'Space Grotesk', sans-serif; font-size: clamp(24px, 3.6vw, 32px); margin: 0 0 18px; font-weight: 600; }
+  h3.subhead{ font-family:'Space Grotesk', sans-serif; font-size: 18px; font-weight: 600; margin: 0 0 10px; }
+  p{ color: var(--text-muted); font-size: 15px; max-width: 720px; }
+  p.tight{ margin-top: 0; }
+
+  .panel{ background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 28px; }
+  .panel + .panel{ margin-top: 18px; }
+
+  table.data-table{ width:100%; border-collapse: collapse; font-size: 14px; margin-top: 10px; }
+  table.data-table th, table.data-table td{ text-align:left; padding: 10px 12px; border-bottom: 1px solid var(--border-soft); }
+  table.data-table th{ font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.05em; font-weight: 500; }
+  table.data-table td{ color: var(--text); }
+  table.data-table .num{ font-family:'JetBrains Mono', monospace; color: var(--green); }
+
+  .kpi-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 8px; }
+  @media (min-width: 640px){ .kpi-grid{ grid-template-columns: repeat(4,1fr); } }
+  .kpi{ background: var(--panel-2); border: 1px solid var(--border-soft); border-radius: 4px; padding: 16px; }
+  .kpi .klabel{ font-family:'JetBrains Mono', monospace; font-size: 10.5px; color: var(--text-muted); margin-bottom: 6px; }
+  .kpi .kvalue{ font-family:'JetBrains Mono', monospace; font-size: 18px; color: var(--green); font-weight: 500; }
+
+  .card-grid{ display:grid; grid-template-columns: 1fr; gap: 18px; margin-top: 8px; }
+  @media (min-width: 720px){ .card-grid{ grid-template-columns: 1fr 1fr; } }
+  .mini-card{ background: var(--panel); border: 1px solid var(--border-soft); border-radius: 5px; padding: 20px; }
+  .mini-card h4{ font-family:'Space Grotesk', sans-serif; font-size: 15.5px; margin: 0 0 8px; font-weight: 600; }
+  .mini-card p{ font-size: 13.5px; margin: 0; }
+  .mini-card .mono-tag{ font-family:'JetBrains Mono', monospace; font-size: 10.5px; color: var(--amber); margin-bottom: 8px; display:block; }
+
+  .flow-diagram{ background: var(--panel-2); border: 1px solid var(--border-soft); border-radius: 4px; padding: 18px; margin-top: 14px; }
+  .flow-diagram svg{ width:100%; height:auto; display:block; }
+  .node-box{ fill:#0d1420; stroke:#223049; stroke-width:1; }
+  .node-box.warn{ stroke:#ffb454; }
+  .node-box.ok{ stroke:#3ddc84; }
+  .node-label{ font-family:'JetBrains Mono', monospace; font-size:9.5px; fill:#e7edf6; }
+  .node-sub{ font-family:'JetBrains Mono', monospace; font-size:7.5px; fill:#8b98b3; }
+  .flow-line{ stroke:#8b98b3; stroke-width:1; fill:none; }
+
+  .tags{ display:flex; flex-wrap:wrap; gap: 8px; margin-top: 16px; }
+  .tag{ font-family:'JetBrains Mono', monospace; font-size: 12px; color: var(--text-muted); border: 1px solid var(--border); padding: 5px 10px; border-radius: 3px; }
+
+  .team-list{ display:flex; flex-wrap:wrap; gap: 10px; margin-top: 14px; }
+  .team-chip{ font-size: 13.5px; border: 1px solid var(--border); border-radius: 20px; padding: 7px 14px; color: var(--text); }
+  .team-chip.you{ border-color: var(--green); color: var(--green); }
+
+  footer{ padding: 60px 0 50px; }
+  .foot-note{ font-size: 12.5px; color: var(--text-muted); font-family:'JetBrains Mono', monospace; display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px; }
+  .btn{ font-family:'Inter', sans-serif; font-size: 14px; font-weight: 600; padding: 12px 20px; border-radius: var(--radius); text-decoration: none; display:inline-flex; align-items:center; gap:8px; border: 1px solid var(--border); color: var(--text); }
+  .btn:hover{ border-color: var(--amber); color: var(--amber); }
+  /* =========================
+   POWER BI DASHBOARD
+   ========================= */
+
+.powerbi-container {
+  margin-top: 50px;
+}
+
+.powerbi-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 22px;
+}
+
+.powerbi-header h3 {
+  margin: 10px 0 8px;
+  font-size: 1.6rem;
+}
+
+.powerbi-header p {
+  max-width: 750px;
+  margin: 0;
+  color: #8d9bb5;
+  line-height: 1.7;
+}
+
+.powerbi-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+  background: var(--panel);
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: 0.2s ease;
+}
+
+.powerbi-button:hover {
+  border-color: #4f6385;
+  transform: translateY(-2px);
+}
+
+.powerbi-frame {
+  width: 100%;
+  height: 700px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--panel);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.powerbi-frame iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: none;
+}
+
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 768px) {
+
+  .powerbi-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .powerbi-button {
+    width: 100%;
+  }
+
+  .powerbi-frame {
+    height: 550px;
+  }
+
+}
+  /*Imagenes*/
+  .wrap img {
+  display: block;
+  width: 100%;
+  max-width: 900px;
+  height: auto;
+  margin: 25px auto;
+  object-fit: contain;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="index.html" class="brand"><span class="dot"></span>EJM_</a>
+    <a href="index.html#proyectos" class="back-link">← Volver al portafolio</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow mono">CASO_001 // REGISTRO_COMPLETO</div>
+    <span class="badge">TRABAJO FINAL · BIG DATA Y ANALÍTICA DE DATOS · USIL 2026</span>
+    <h1 class="ptitle">Diseño e implementación de una solución de analítica Big Data para el desempeño comercial y la experiencia del cliente en Gildemeister</h1>
+    <p class="lede">
+      Caso académico del sector automotriz: una empresa concentra sus datos de ventas, postventa,
+      atención al cliente y satisfacción en fuentes desconectadas y procesos manuales. El proyecto
+      diseña e implementa una arquitectura Data Lakehouse que integra todo en un modelo dimensional
+      único, con dashboards en Power BI y una capa NoSQL de respaldo en MongoDB Atlas.
+    </p>
+
+    <div class="meta-strip">
+      <div class="mcell"><div class="tlabel">MI ROL</div><div class="tvalue">Arquitectura Data Lakehouse & modelo dimensional</div></div>
+      <div class="mcell"><div class="tlabel">EQUIPO</div><div class="tvalue">2 integrantes</div></div>
+      <div class="mcell"><div class="tlabel">CURSO</div><div class="tvalue">Big Data y Analítica de Datos</div></div>
+      <div class="mcell"><div class="tlabel">AÑO</div><div class="tvalue">2026</div></div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="section-tag">// EL_PROBLEMA</div>
+    <h2>Datos correctos, pero desconectados</h2>
+    <p class="tight">
+      Gildemeister genera información de ventas, servicios postventa, atención al cliente y
+      encuestas de satisfacción, pero cada área la gestiona por separado con hojas de cálculo,
+      archivos planos y consolidaciones manuales. El resultado: reportes que tardan en llegar,
+      cifras que no cuadran entre áreas, y decisiones comerciales tomadas con información parcial
+      en lugar de una vista integral del negocio.
+    </p>
+    <p>
+      El objetivo del proyecto fue optimizar la toma de decisiones comerciales y la gestión de la
+      experiencia del cliente mediante una solución analítica que integrara y unificara los datos
+      transaccionales, de postventa y de experiencia del cliente bajo principios de gobernanza y
+      calidad de datos.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-tag">// ARQUITECTURA</div>
+    <h2>De procesos manuales a un pipeline automatizado</h2>
+    <h3>Arquitectura AS IS</h3>
+    <p class="tight">La arquitectura AS IS dependía de consultas ad-hoc a SAP, descargas manuales de Google Forms
+    y consolidaciones en Excel cruzadas con macros. La arquitectura TO BE que diseñamos automatiza
+    todo el flujo, de extremo a extremo:</p>
+    
+    <img src="/img/AS_IS.jpg" alt="Arquitectura AS IS">
+
+    <h3>Arquitectura TO BE</h3>
+    <p style="margin-top:14px;">
+      Extracción con Azure Data Factory sobre Self-Hosted Integration Runtime, transformación en
+      Azure Databricks con Apache Spark SQL (limpieza, claves sustitutas, dimensiones y hechos), y
+      carga en formato Delta directamente consultable desde Power BI.
+    </p>
+    <img src="/img/TO_BE.png" alt="Arquitectura TO BE">
+
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-tag">// FUENTES_DE_DATOS</div>
+    <h2>Adquisición: 14,000 registros, 4 orígenes</h2>
+    <p class="tight">Datos sintéticos en CSV, generados bajo reglas de validación, lo que significó cero duplicados
+    y cero nulos al llegar a la etapa de limpieza.</p>
+    <table class="data-table">
+      <thead>
+        <tr><th>Dataset</th><th>N.º de registros</th><th>Contenido</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Venta_Vehiculos.csv</td><td class="num">2,500</td><td>Ventas, dealer, asesor, vehículo, montos y márgenes</td></tr>
+        <tr><td>Servicio_Postventa.csv</td><td class="num">3,500</td><td>Mantenimientos, tiempos de espera/entrega, reincidencia</td></tr>
+        <tr><td>Atención_Cliente.csv</td><td class="num">3,000</td><td>Casos de soporte, canal, prioridad, tiempos de gestión</td></tr>
+        <tr><td>Encuestas_Satisfacción.csv</td><td class="num">5,000</td><td>NPS, CSAT, CES, calificación general</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-tag">// MODELO_DIMENSIONAL</div>
+    <h2>5 dimensiones, 4 hechos analíticos (DDV)</h2>
+    <img src="/img/ModeloDimensional.png" alt="Arquitectura Data Lakehouse del proyecto automotriz">
+    <p class="tight">
+      Sobre la capa transformada (UDV) construimos un modelo dimensional conformado por las
+      dimensiones <strong style="color:var(--text)">Cliente, Dealer, Asesor, Vehículo y Tiempo</strong>,
+      y cuatro tablas de hechos orientadas a distintos KPIs de negocio:
+    </p>
+    <div class="card-grid">
+      <div class="mini-card">
+        <span class="mono-tag">fact_desempeno_ddv</span>
+        <h4>Desempeño comercial</h4>
+        <p>Montos, descuentos, márgenes y tiempos de cierre, con monto promedio por dealer y tasa de conversión a postventa.</p>
+      </div>
+      <div class="mini-card">
+        <span class="mono-tag">fact_postventa_ddv</span>
+        <h4>Experiencia postventa</h4>
+        <p>Tiempos de espera y entrega, reincidencia de fallas y tiempo promedio de espera por dealer.</p>
+      </div>
+      <div class="mini-card">
+        <span class="mono-tag">fact_atencion_ddv</span>
+        <h4>Atención al cliente</h4>
+        <p>Tiempos de respuesta y cierre por dealer, tasa de escalamiento de casos y calidad de servicio.</p>
+      </div>
+      <div class="mini-card">
+        <span class="mono-tag">fact_experiencia_ddv</span>
+        <h4>Experiencia integral</h4>
+        <p>NPS, CSAT, CES y calificación general, con flag de clientes promotores y NPS promedio por dealer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-tag">// DASHBOARDS</div>
+
+    <h2>Cuatro tableros, cuatro audiencias</h2>
+
+    <div class="card-grid">
+
+      <div class="mini-card">
+        <span class="mono-tag">DIRECTIVOS</span>
+        <h4>Resumen Ejecutivo</h4>
+        <p>
+          Vista consolidada nacional: ventas totales, NPS global,
+          % reincidencia y % escalados en una sola pantalla.
+        </p>
+      </div>
+
+      <div class="mini-card">
+        <span class="mono-tag">COMERCIAL</span>
+        <h4>Ventas</h4>
+        <p>
+          Ventas por dealer, modelo, canal y asesor, con márgenes
+          y tiempos de cierre para detectar oportunidades.
+        </p>
+      </div>
+
+      <div class="mini-card">
+        <span class="mono-tag">OPERACIONES</span>
+        <h4>Postventa</h4>
+        <p>
+          Tiempos de entrega y cierre por dealer, reincidencia
+          de fallas y tipo de servicio más frecuente.
+        </p>
+      </div>
+
+      <div class="mini-card">
+        <span class="mono-tag">CUSTOMER EXPERIENCE</span>
+        <h4>Experiencia del Cliente</h4>
+        <p>
+          NPS y CSAT por periodo y dealer, segmentación de clientes
+          promotores/detractores y comentarios.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="tags">
+      <span class="tag">Filtros interactivos</span>
+      <span class="tag">Actualización diaria</span>
+      <span class="tag">Seguridad por rol</span>
+      <span class="tag">Reportes automáticos</span>
+    </div>
+
+
+    <!-- POWER BI -->
+    <div class="powerbi-container">
+
+      <div class="powerbi-header">
+        <div>
+          <span class="mono-tag">LIVE DASHBOARD</span>
+
+          <h3>TF_BIGDATA</h3>
+
+          <p>
+            Explora el dashboard interactivo desarrollado en Power BI.
+            Utiliza los filtros y visualizaciones para analizar los
+            principales indicadores y obtener insights del negocio.
+          </p>
+        </div>
+
+        <a
+          href="https://app.powerbi.com/view?r=eyJrIjoiYzA5MzVhM2MtM2RjYi00M2ViLWI5YWMtNGVlZDBmZTQzNTc0IiwidCI6IjMyMDliNTBiLWI3OWItNDNkYy05ZmM0LThkNDJjNDA2ZGQ2MSIsImMiOjR9"
+          target="_blank"
+          class="powerbi-button">
+          Abrir dashboard ↗
+        </a>
+      </div>
+
+
+      <div class="powerbi-frame">
+        <iframe
+          title="TF_BIGDATA"
+          src="https://app.powerbi.com/view?r=eyJrIjoiYzA5MzVhM2MtM2RjYi00M2ViLWI5YWMtNGVlZDBmZTQzNTc0IiwidCI6IjMyMDliNTBiLWI3OWItNDNkYy05ZmM0LThkNDJjNDA2ZGQ2MSIsImMiOjR9"
+          frameborder="0"
+          allowFullScreen="true">
+        </iframe>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-tag">// RESULTADO</div>
+    <h2>De datos dispersos a una única fuente de verdad</h2>
+    <p class="tight">
+      El proyecto integró 14,000 registros de 4 fuentes independientes en un modelo dimensional
+      único, eliminando las inconsistencias del proceso manual. La automatización del pipeline con
+      Azure Data Factory y Databricks redujo el tiempo de generación de reportes frente al proceso
+      manual, y los cuatro dashboards en Power BI dejaron la toma de decisiones apoyada en datos
+      consistentes en lugar de reportes estáticos y dispersos.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-tag">// EQUIPO</div>
+    <h2>Trabajo en equipo</h2>
+    <p class="tight">Proyecto desarrollado en equipo para el curso Big Data y Analítica de Datos, USIL, bajo la
+    guía del profesor Ing. Hernán Otiniano Perea Fasanando.</p>
+    <div class="team-list">
+      <span class="team-chip you">Erick Jauregui Meneses</span>
+      <span class="team-chip">Leandro Carrasco Mallma</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a class="btn" href="index.html#proyectos">← Volver al portafolio</a>
+    <div class="foot-note" style="margin-top:30px;">
+      <span>© 2026 Erick Jáuregui Meneses</span>
+      <span>Lima, Perú</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
