@@ -4,150 +4,37 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>People Analytics: Rotación y eNPS — Erick Jáuregui</title>
+<meta name="description" content="Caso aplicado de People Analytics: rotación, eNPS, medidas DAX y priorización de seis equipos con Power BI. Proyecto de Erick Jauregui.">
+<meta name="theme-color" content="#0a0f1a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg: #0a0f1a; --panel: #10182a; --panel-2: #0d1420;
-    --border: #223049; --border-soft: rgba(255,255,255,0.07);
-    --text: #e7edf6; --text-muted: #8b98b3;
-    --amber: #ffb454; --green: #3ddc84; --red: #ff6b6b;
-    --grid: rgba(255,255,255,0.05); --radius: 4px;
-  }
-  *{ box-sizing: border-box; }
-  html{ scroll-behavior: smooth; }
-  @media (prefers-reduced-motion: reduce){
-    html{ scroll-behavior: auto; }
-    *{ animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-  }
-  body{
-    margin:0;
-    background:
-      linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 100% 42px,
-      linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 42px 100%,
-      var(--bg);
-    color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
-  a{ color: inherit; }
-  ::selection{ background: var(--amber); color: #0a0f1a; }
-  :focus-visible{ outline: 2px solid var(--amber); outline-offset: 3px; }
-  .mono{ font-family: 'JetBrains Mono', monospace; }
-  .wrap{ max-width: 1080px; margin: 0 auto; padding: 0 28px; }
-
-  nav{ position: sticky; top:0; z-index: 50; backdrop-filter: blur(10px); background: rgba(10,15,26,0.82); border-bottom: 1px solid var(--border-soft); }
-  nav .wrap{ display:flex; align-items:center; justify-content:space-between; height: 64px; }
-  .brand{ font-family:'JetBrains Mono', monospace; font-size: 14px; letter-spacing: 0.03em; display:flex; align-items:center; gap:8px; text-decoration:none; color: var(--text); }
-  .brand .dot{ width:7px; height:7px; border-radius:50%; background: var(--green); box-shadow: 0 0 8px var(--green); flex:none; }
-  .back-link{ font-family:'JetBrains Mono', monospace; font-size: 13px; color: var(--text-muted); text-decoration:none; display:flex; align-items:center; gap:8px; }
-  .back-link:hover{ color: var(--amber); }
-
-  header.hero{ padding: 64px 0 48px; }
-  .eyebrow{ font-family:'JetBrains Mono', monospace; font-size: 13px; color: var(--amber); letter-spacing: 0.06em; margin-bottom: 18px; }
-  .badge{ font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.05em; padding: 5px 10px; border-radius: 3px; border: 1px solid currentColor; color: #3ddc84; display:inline-block; margin-bottom: 18px; }
-  h1.ptitle{ font-family:'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(30px, 5vw, 46px); line-height: 1.08; letter-spacing: -0.01em; margin: 0 0 18px; max-width: 780px; }
-  .lede{ max-width: 680px; color: var(--text-muted); font-size: 16.5px; margin: 0 0 32px; }
-
-  .meta-strip{ display:grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--border-soft); border: 1px solid var(--border-soft); border-radius: var(--radius); overflow:hidden; margin-bottom: 8px; }
-  @media (min-width: 720px){ .meta-strip{ grid-template-columns: repeat(4,1fr); } }
-  .mcell{ background: var(--panel-2); padding: 16px 18px; }
-  .mcell .tlabel{ font-family:'JetBrains Mono', monospace; font-size: 10.5px; color: var(--text-muted); letter-spacing: 0.06em; margin-bottom: 7px; }
-  .mcell .tvalue{ font-size: 14px; font-weight: 600; }
-
-  section{ padding: 64px 0; border-top: 1px solid var(--border-soft); }
-  .section-tag{ font-family:'JetBrains Mono', monospace; font-size: 12px; color: var(--amber); letter-spacing: 0.08em; margin-bottom: 10px; }
-  h2{ font-family:'Space Grotesk', sans-serif; font-size: clamp(24px, 3.6vw, 32px); margin: 0 0 18px; font-weight: 600; }
-  h4{ font-family:'Space Grotesk', sans-serif; font-size: 15.5px; margin: 0 0 8px; font-weight: 600; }
-  p{ color: var(--text-muted); font-size: 15px; max-width: 720px; }
-  p.tight{ margin-top: 0; }
-  code.mono{ background: var(--panel-2); border: 1px solid var(--border-soft); border-radius: 3px; padding: 1px 6px; font-size: 13px; }
-
-  figure.shot{ background: var(--panel-2); border: 1px solid var(--border-soft); border-radius: 4px; padding: 10px; margin: 0 0 8px; }
-  figure.shot img{ width:100%; height:auto; display:block; border-radius: 2px; }
-  figure.shot figcaption{ font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); padding: 8px 4px 2px; }
-
-  table.data-table{ width:100%; border-collapse: collapse; font-size: 14px; margin-top: 10px; }
-  table.data-table th, table.data-table td{ text-align:left; padding: 10px 12px; border-bottom: 1px solid var(--border-soft); }
-  table.data-table th{ font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.05em; font-weight: 500; }
-  table.data-table td{ color: var(--text); }
-  table.data-table .num{ font-family:'JetBrains Mono', monospace; color: var(--green); }
-  table.data-table .num.warn{ color: var(--amber); }
-  table.data-table .num.crit{ color: var(--red); }
-
-  .formula-grid{ display:grid; grid-template-columns: 1fr; gap: 12px; margin-top: 14px; }
-  @media (min-width: 720px){ .formula-grid{ grid-template-columns: repeat(3,1fr); } }
-  .formula{ background: var(--panel-2); border: 1px solid var(--border-soft); border-radius: 4px; padding: 14px 16px; }
-  .formula .flabel{ font-family:'JetBrains Mono', monospace; font-size: 11px; color: var(--amber); margin-bottom: 8px; }
-  .formula .fexpr{ font-family:'JetBrains Mono', monospace; font-size: 12.5px; color: var(--text); }
-
-  .quadrant-wrap{ background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 28px; margin-top: 8px; }
-  .quadrant-wrap svg{ width: 100%; height: auto; display:block; }
-
-  .card-grid{ display:grid; grid-template-columns: 1fr; gap: 18px; margin-top: 18px; }
-  @media (min-width: 720px){ .card-grid{ grid-template-columns: 1fr 1fr; } }
-  .mini-card{ background: var(--panel); border: 1px solid var(--border-soft); border-radius: 5px; padding: 20px; }
-  .mini-card p{ font-size: 13.5px; margin: 0; }
-  .mini-card .mono-tag{ font-family:'JetBrains Mono', monospace; font-size: 10.5px; margin-bottom: 8px; display:block; }
-  .mini-card .mono-tag.crit{ color: var(--red); }
-  .mini-card .mono-tag.warn{ color: var(--amber); }
-  .mini-card .mono-tag.ok{ color: var(--green); }
-  .mini-card ul{ margin: 10px 0 0; padding-left: 18px; font-size: 13.5px; color: var(--text-muted); }
-  .mini-card li{ margin-bottom: 4px; }
-
-  ul.plain{ font-size: 15px; color: var(--text-muted); max-width: 720px; padding-left: 20px; }
-  ul.plain li{ margin-bottom: 8px; }
-
-  footer{ padding: 60px 0 50px; }
-  .foot-note{ font-size: 12.5px; color: var(--text-muted); font-family:'JetBrains Mono', monospace; display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px; }
-  .btn{ font-family:'Inter', sans-serif; font-size: 14px; font-weight: 600; padding: 12px 20px; border-radius: var(--radius); text-decoration: none; display:inline-flex; align-items:center; gap:8px; border: 1px solid var(--border); color: var(--text); }
-  .btn:hover{ border-color: var(--amber); color: var(--amber); }
-/* Contenedor del dashboard Power BI */
-.powerbi-container {
-  position: relative;
-  width: 100%;
-  max-width: 1200px;
-  margin: 30px auto 0;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--panel);
-}
-
-/* Iframe de Power BI */
-.powerbi-container iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="project-page">
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-<nav>
+<nav class="site-nav" aria-label="Navegación principal">
   <div class="wrap">
-    <a href="index.html" class="brand"><span class="dot"></span>EJM_</a>
+    <a href="index.html" class="brand" aria-label="Erick Jauregui, inicio"><span class="dot" aria-hidden="true"></span>EJM_</a>
     <a href="index.html#proyectos" class="back-link">← Volver al portafolio</a>
   </div>
 </nav>
 
+<main id="contenido" tabindex="-1">
 <header class="hero">
   <div class="wrap">
-    <div class="eyebrow mono">CASO_003 // REGISTRO_COMPLETO</div>
-    <span class="badge">EJERCICIO APLICADO · PEOPLE ANALYTICS</span>
-    <h1 class="ptitle">Rotación y eNPS: una matriz de priorización para decidir qué equipo atender primero</h1>
+    <div class="eyebrow mono">CASO_002 // REGISTRO_COMPLETO</div>
+    <span class="badge bi">EJERCICIO APLICADO · PEOPLE ANALYTICS</span>
+    <h1 class="ptitle">People Analytics: rotación, eNPS y priorización de equipos</h1>
     <p class="lede">
-      Un grupo de líderes reportó una sensación compartida: más desgaste, fuga de talento clave
+      El ejercicio plantea un escenario reportado por líderes: más desgaste, fuga de talento clave
       y un ambiente más tenso. El encargo era simple de decir y difícil de responder bien: construir
-      un dashboard que cuente esa historia con datos y ayude a decidir, de forma objetiva, qué
+      un dashboard que cuente esa historia con datos y ayude a decidir, con criterios explícitos, qué
       equipos priorizar primero.
     </p>
 
+    <div class="project-outline" role="navigation" aria-label="Secciones del caso"><a href="#datos">Datos</a><a href="#proceso">Proceso</a><a href="#dashboard">Dashboard</a><a href="#hallazgos">Hallazgos</a><a href="#priorizacion">Priorización</a><a href="#aprendizajes">Aprendizajes</a></div>
     <div class="meta-strip">
       <div class="mcell"><div class="tlabel">MI ROL</div><div class="tvalue">Modelo de datos, medidas DAX y dashboard</div></div>
       <div class="mcell"><div class="tlabel">FUENTE</div><div class="tvalue">Excel — 2 hojas, 54 filas c/u</div></div>
@@ -157,20 +44,24 @@
   </div>
 </header>
 
-<section>
+<section id="datos">
   <div class="wrap">
     <div class="section-tag">// LOS_DATOS</div>
     <h2>Dos hojas, tres métricas centrales</h2>
     <p class="tight">La base de datos entregada trae dos hojas mensuales por equipo, de enero a
     septiembre 2025:</p>
-    <table class="data-table">
-      <thead><tr><th>Hoja</th><th>Contenido</th></tr></thead>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Fuentes del ejercicio por equipo y mes">
+    <table class="data-table"><caption>Fuentes del ejercicio por equipo y mes</caption>
+      <thead><tr><th scope="col">Hoja</th><th scope="col">Contenido</th></tr></thead>
       <tbody>
         <tr><td>Rotación_Mensual</td><td>Colaboradores promedio, ingresos, salidas voluntarias e involuntarias por equipo y mes</td></tr>
         <tr><td>Experiencia_Drivers</td><td>% Promotores / Pasivos / Detractores, y calificación 1–5 de cuatro drivers: balance vida-trabajo, calidad del líder, reconocimiento y desarrollo profesional</td></tr>
       </tbody>
     </table>
+    </div>
+    <p class="table-hint">En pantallas pequeñas, desplaza la tabla horizontalmente para ver todas las columnas.</p>
 
+    <p class="note"><strong>Escalas de cálculo:</strong> la rotación se expresa como porcentaje. Para eNPS se restan porcentajes en escala 0–100 y el resultado se expresa en puntos (−100 a 100). Si el modelo almacena proporciones en escala 0–1, la diferencia se multiplica por 100. Queda pendiente documentar el formato de origen y las medidas DAX exactas para reproducir el cálculo.</p>
     <div class="formula-grid">
       <div class="formula">
         <div class="flabel">ROTACIÓN VOLUNTARIA</div>
@@ -182,47 +73,64 @@
       </div>
       <div class="formula">
         <div class="flabel">eNPS</div>
-        <div class="fexpr">(% Promotores − % Detractores) × 100</div>
+        <div class="fexpr">Promotores (%) − Detractores (%)</div>
       </div>
     </div>
   </div>
 </section>
 
-<section>
+<section id="proceso">
+  <div class="wrap">
+    <div class="section-tag">// PROCESO</div>
+    <h2>De las métricas a una propuesta de decisión</h2>
+    <ol class="process-list">
+      <li><strong>Organizar la información:</strong> usar las dos hojas de Excel para analizar el mismo periodo y los seis equipos.</li>
+      <li><strong>Construir la lectura analítica:</strong> desarrollar el modelo, las medidas DAX de rotación y eNPS y las visualizaciones en Power BI.</li>
+      <li><strong>Comparar tendencias:</strong> contrastar la evolución de las métricas con los drivers de experiencia laboral e identificar equipos que requieren atención.</li>
+      <li><strong>Proponer prioridades:</strong> ubicar los equipos en una matriz cualitativa de esfuerzo y criticidad y plantear acciones sujetas a validación.</li>
+    </ol>
+    <div class="tags" aria-label="Tecnologías del proyecto"><span class="tag">Excel</span><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Modelo de datos</span></div>
+  </div>
+</section>
+<section id="dashboard">
   <div class="wrap">
     <div class="section-tag">// EL_DASHBOARD</div>
 
-    <h2>DASHBOARD: dónde está el problema, y por qué</h2>
+    <h2>Dashboard: evolución de la rotación y la experiencia laboral</h2>
 
     <p class="tight">
-      En el dashboard se puede ver los eNPS por equipo mes a mes,
-      y cómo se mueve junto con la rotación voluntaria y qué driver específico de experiencia laboral se deterioró en
-      cada equipo, y cómo evolucionó la rotación total.
+      El informe permite consultar el eNPS y la rotación por equipo y mes, y comparar su
+      evolución con los drivers de experiencia laboral. Esta lectura permite identificar patrones
+      y formular hipótesis para investigar con información adicional.
     </p>
 
-    <div class="powerbi-container">
+    <div class="powerbi-header"><p>Explora los filtros del informe. En móvil puedes abrirlo en otra pestaña para disponer de más espacio.</p><a class="powerbi-button" href="https://app.powerbi.com/view?r=eyJrIjoiN2JlOGYzOTEtYzIzMS00OGI1LWFmNjEtMDkyZWY3M2Q1YTI4IiwidCI6IjMyMDliNTBiLWI3OWItNDNkYy05ZmM0LThkNDJjNDA2ZGQ2MSIsImMiOjR9" target="_blank" rel="noopener noreferrer">Abrir dashboard ↗<span class="sr-only">(nueva pestaña)</span></a></div>
+    <div class="powerbi-container powerbi-frame">
       <iframe
-        title="SaludOrganizacional"
+        title="Dashboard de People Analytics: rotación y eNPS por equipo"
+        loading="lazy"
         src="https://app.powerbi.com/view?r=eyJrIjoiN2JlOGYzOTEtYzIzMS00OGI1LWFmNjEtMDkyZWY3M2Q1YTI4IiwidCI6IjMyMDliNTBiLWI3OWItNDNkYy05ZmM0LThkNDJjNDA2ZGQ2MSIsImMiOjR9"
-        allowFullScreen="true">
+        allowfullscreen>
       </iframe>
     </div>
 
   </div>
 </section>
 
-<section>
+<section id="hallazgos">
   <div class="wrap">
     <div class="section-tag">// HALLAZGO_PRINCIPAL</div>
-    <h2>Julio fue el punto de quiebre — y cada equipo se rompió por un motivo distinto</h2>
+    <h2>Desde julio se observan deterioros en cuatro equipos</h2>
     <p class="tight">
       De enero a junio los seis equipos se mantienen estables, con eNPS entre 53 y 68. A partir de
-      julio, cuatro equipos (A, B, C y D) sufren una caída simultánea pero <strong style="color:var(--text)">cada uno en un
-      driver distinto</strong> lo que descarta una causa única y apunta a intervenciones puntuales, no
-      a una política general fallida:
+      julio, cuatro equipos (A, B, C y D) muestran deterioros en distintos drivers de experiencia
+      laboral. La coincidencia temporal sugiere revisar tanto factores comunes como situaciones
+      específicas de cada equipo. Los datos describen asociaciones; por sí solos no permiten
+      establecer causas ni descartar una causa compartida:
     </p>
-    <table class="data-table">
-      <thead><tr><th>Equipo</th><th>Driver que colapsó</th><th>eNPS ene → sep</th><th>Rotación total (sep)</th><th>Dotación</th></tr></thead>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Indicadores por equipo: enero y septiembre de 2025">
+    <table class="data-table"><caption>Indicadores por equipo: enero y septiembre de 2025</caption>
+      <thead><tr><th scope="col">Equipo</th><th scope="col">Driver deteriorado</th><th scope="col">eNPS ene → sep</th><th scope="col">Rotación total (sep)</th><th scope="col">Dotación</th></tr></thead>
       <tbody>
         <tr><td>Equipo A</td><td>Balance vida-trabajo (4.3 → 2.3)</td><td class="num">64 → 39</td><td class="num warn">5.93%</td><td>118</td></tr>
         <tr><td>Equipo B</td><td>Calidad del líder (4.1 → 2.2)</td><td class="num">59 → 40</td><td class="num">5.26%</td><td>95</td></tr>
@@ -232,31 +140,25 @@
         <tr><td>Equipo F</td><td>Sin cambios — estable</td><td class="num" style="color:var(--green);">65 → 68</td><td class="num" style="color:var(--green);">2.38%</td><td>84</td></tr>
       </tbody>
     </table>
+    </div>
+    <p class="table-hint">En pantallas pequeñas, desplaza la tabla horizontalmente para ver todas las columnas.</p>
   </div>
 </section>
 
-<section>
+<section id="priorizacion">
   <div class="wrap">
     <div class="section-tag">// PRIORIZACIÓN</div>
     <h2>Matriz de priorización: esfuerzo vs. criticidad</h2>
     <p class="tight">
       El criterio pedido fue priorizar equipos que exijan <strong style="color:var(--text)">menor esfuerzo de
-      intervención</strong> y tengan <strong style="color:var(--text)">mayor criticidad</strong>. Un equipo con un solo
-      driver deteriorado es una intervención contenida y medible; un equipo con varios drivers
-      afectados a la vez requiere un plan más amplio. Ubicando a los cuatro equipos afectados en
-      ambos ejes:
+      intervención</strong> y tengan <strong style="color:var(--text)">mayor criticidad</strong>. Como criterio de trabajo, se estima menor esfuerzo cuando hay un solo
+      driver deteriorado y mayor esfuerzo cuando hay varios. Esta es una hipótesis de
+      priorización que debe contrastarse con RR.HH. y los recursos disponibles. La posición de
+      los equipos en el diagrama es cualitativa; no representa una escala calculada de costos:
     </p>
 
-    <div class="quadrant-wrap">
+    <div class="quadrant-wrap diagram-scroll" tabindex="0" role="region" aria-label="Matriz de priorización, desplazable horizontalmente">
       <svg viewBox="0 0 640 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Matriz de priorización: esfuerzo de intervención en el eje horizontal, criticidad en el eje vertical">
-        <style>
-          .axis-line{ stroke:#223049; stroke-width:1; }
-          .grid-line{ stroke:#1a2436; stroke-width:1; stroke-dasharray:3,4; }
-          .q-label{ font-family:'JetBrains Mono', monospace; font-size:10px; fill:#8b98b3; }
-          .axis-label{ font-family:'JetBrains Mono', monospace; font-size:11px; fill:#8b98b3; }
-          .pt-label{ font-family:'Space Grotesk', sans-serif; font-size:13px; fill:#e7edf6; font-weight:600; }
-          .pt-sub{ font-family:'JetBrains Mono', monospace; font-size:9px; fill:#8b98b3; }
-        </style>
 
         <line class="grid-line" x1="60" y1="220" x2="600" y2="220"/>
         <line class="grid-line" x1="330" y1="30" x2="330" y2="370"/>
@@ -272,9 +174,9 @@
         <text class="q-label" x="580" y="355" text-anchor="end">Alto esfuerzo / Baja criticidad</text>
 
         <!-- Equipo A: esfuerzo bajo, criticidad alta -->
-        <circle cx="175" cy="100" r="15" fill="#ffb454" fill-opacity="0.85"/>
-        <text class="pt-label" x="175" y="80" text-anchor="middle">Equipo A</text>
-        <text class="pt-sub" x="175" y="128" text-anchor="middle">Balance vida-trabajo</text>
+        <circle cx="160" cy="120" r="15" fill="#ffb454" fill-opacity="0.85"/>
+        <text class="pt-label" x="160" y="100" text-anchor="middle">Equipo A</text>
+        <text class="pt-sub" x="160" y="148" text-anchor="middle">Balance vida-trabajo</text>
 
         <!-- Equipo B: esfuerzo bajo, criticidad media -->
         <circle cx="150" cy="200" r="13" fill="#ffb454" fill-opacity="0.7"/>
@@ -282,9 +184,9 @@
         <text class="pt-sub" x="150" y="228" text-anchor="middle">Calidad del líder</text>
 
         <!-- Equipo D: esfuerzo bajo-medio, criticidad alta -->
-        <circle cx="225" cy="85" r="14" fill="#ffb454" fill-opacity="0.85"/>
-        <text class="pt-label" x="225" y="65" text-anchor="middle">Equipo D</text>
-        <text class="pt-sub" x="225" y="113" text-anchor="middle">Reconocimiento</text>
+        <circle cx="255" cy="65" r="14" fill="#ffb454" fill-opacity="0.85"/>
+        <text class="pt-label" x="255" y="45" text-anchor="middle">Equipo D</text>
+        <text class="pt-sub" x="255" y="93" text-anchor="middle">Reconocimiento</text>
 
         <!-- Equipo C: esfuerzo alto, criticidad muy alta -->
         <circle cx="480" cy="60" r="18" fill="#ff6b6b" fill-opacity="0.85"/>
@@ -292,49 +194,50 @@
         <text class="pt-sub" x="480" y="92" text-anchor="middle">Liderazgo + desarrollo</text>
 
         <!-- E, F estables -->
-        <circle cx="140" cy="330" r="10" fill="#3ddc84" fill-opacity="0.7"/>
-        <text class="pt-sub" x="140" y="350" text-anchor="middle">Equipo E — estable</text>
-        <circle cx="200" cy="345" r="9" fill="#3ddc84" fill-opacity="0.7"/>
-        <text class="pt-sub" x="200" y="365" text-anchor="middle">Equipo F — estable</text>
+        <circle cx="140" cy="285" r="10" fill="#3ddc84" fill-opacity="0.7"/>
+        <text class="pt-sub" x="140" y="305" text-anchor="middle">Equipo E — estable</text>
+        <circle cx="230" cy="330" r="9" fill="#3ddc84" fill-opacity="0.7"/>
+        <text class="pt-sub" x="230" y="350" text-anchor="middle">Equipo F — estable</text>
       </svg>
     </div>
     <p style="margin-top:14px;">
-      A y D caen en el cuadrante de mayor prioridad: criticidad alta con una causa única y
-      accionable. B es la siguiente intervención de bajo costo. C es el caso más crítico de todos
+      A y D se proponen como primeras intervenciones focalizadas: presentan criticidad alta
+      y un driver deteriorado identificado. B sería la siguiente intervención de esfuerzo estimado bajo. C es el caso más crítico de todos
       —la rotación total más alta y dos drivers deteriorados a la vez—, pero exige un plan más
-      amplio: no es un quick win, es la urgencia mayor.
+      amplio y atención urgente en paralelo.
     </p>
   </div>
 </section>
 
-<section>
+<section id="acciones">
   <div class="wrap">
     <div class="section-tag">// PLAN_DE_ACCIÓN</div>
-    <h2>Qué haría con cada equipo</h2>
+    <h2>Propuestas de intervención por equipo</h2>
+    <p class="note">Estas acciones y metas son propuestas del ejercicio, pendientes de validar con RR.HH. No se ha documentado su ejecución ni una mejora posterior atribuible a ellas.</p>
     <div class="card-grid">
       <div class="mini-card">
         <span class="mono-tag warn">PRIORIDAD 1 · BAJO ESFUERZO</span>
-        <h4>Equipo A — Balance vida-trabajo</h4>
+        <h3>Equipo A — Balance vida-trabajo</h3>
         <p>Único driver deteriorado, caída abrupta desde julio.</p>
         <ul>
           <li>Auditoría de carga y horas extra desde julio</li>
           <li>Revisar políticas de flexibilidad y cobertura de turnos</li>
-          <li>Meta: recuperar el driver a ≥4.0 en dos meses</li>
+          <li>Meta propuesta, por validar: recuperar el driver a ≥4.0 en dos meses</li>
         </ul>
       </div>
       <div class="mini-card">
         <span class="mono-tag warn">PRIORIDAD 1 · BAJO ESFUERZO</span>
-        <h4>Equipo D — Reconocimiento</h4>
+        <h3>Equipo D — Reconocimiento</h3>
         <p>Driver aislado; probable brecha entre desempeño y reconocimiento formal.</p>
         <ul>
           <li>Revisar frecuencia de reconocimiento formal e informal del líder</li>
           <li>Programa de reconocimiento entre pares de bajo costo</li>
-          <li>Meta: recuperar el driver a ≥3.8 en dos meses</li>
+          <li>Meta propuesta, por validar: recuperar el driver a ≥3.8 en dos meses</li>
         </ul>
       </div>
       <div class="mini-card">
         <span class="mono-tag ok">PRIORIDAD 2 · BAJO ESFUERZO</span>
-        <h4>Equipo B — Calidad del líder</h4>
+        <h3>Equipo B — Calidad del líder</h3>
         <p>Caída puntual y aislada; posible cambio o sobrecarga del líder del equipo.</p>
         <ul>
           <li>1:1 de RR.HH. con el equipo y con el líder directo</li>
@@ -344,7 +247,7 @@
       </div>
       <div class="mini-card">
         <span class="mono-tag crit">URGENCIA MÁXIMA · ALTO ESFUERZO</span>
-        <h4>Equipo C — Liderazgo + desarrollo profesional</h4>
+        <h3>Equipo C — Liderazgo + desarrollo profesional</h3>
         <p>La rotación total más alta de todos los equipos (8.94%), con dos drivers deteriorados
         a la vez.</p>
         <ul>
@@ -357,12 +260,12 @@
   </div>
 </section>
 
-<section>
+<section id="limites">
   <div class="wrap">
     <div class="section-tag">// DATOS_ADICIONALES</div>
     <h2>Qué datos pediría para afinar el dashboard</h2>
-    <p class="tight">Los datos actuales explican <em>qué</em> equipo está en riesgo, pero no siempre
-    <em>por qué</em> ocurrió el quiebre en julio. Para cerrar esa brecha, propondría incorporar:</p>
+    <p class="tight">Los datos actuales ayudan a identificar <em>qué</em> equipos requieren atención,
+    pero no establecen <em>por qué</em> ocurrió el deterioro desde julio. Para cerrar esa brecha, propondría incorporar:</p>
     <ul class="plain">
       <li><strong style="color:var(--text)">Eventos organizacionales con fecha</strong> — cambios de jefatura, reorganizaciones o recortes de presupuesto de formación, para cruzarlos contra el mes exacto del quiebre por equipo.</li>
       <li><strong style="color:var(--text)">Motivo de salida en entrevistas de egreso</strong> — para validar si el driver que cae en el dashboard coincide con la razón real que dan quienes se van.</li>
@@ -374,9 +277,23 @@
   </div>
 </section>
 
+<section id="aprendizajes">
+  <div class="wrap">
+    <div class="section-tag">// RESULTADOS Y APRENDIZAJES</div>
+    <h2>Del análisis a una recomendación argumentada</h2>
+    <p>El entregable combina un dashboard, una comparación de indicadores por equipo y una matriz de priorización. El Equipo C presenta la mayor rotación total reportada en septiembre (8.94%); A y D se proponen para intervenciones focalizadas, sin dejar de atender la urgencia de C.</p>
+    <div class="card-grid">
+      <div class="mini-card"><h3>Criterio analítico</h3><p>Relacionar métricas y tendencias ayuda a formular preguntas. La correlación observada requiere contexto adicional antes de atribuir causas.</p></div>
+      <div class="mini-card"><h3>Comunicación para decidir</h3><p>Explicar los criterios de priorización, separar hipótesis de hallazgos y hacer visibles los límites del análisis permite presentar recomendaciones evaluables.</p></div>
+    </div>
+    <p class="note"><strong>Pendiente de documentación:</strong> archivo de datos, modelo y medidas DAX exactas, reglas de agregación por periodo y validación del criterio de esfuerzo. El informe publicado se conserva como recurso interactivo.</p>
+  </div>
+</section>
+</main>
+
 <footer>
   <div class="wrap">
-    <a class="btn" href="index.html#proyectos">← Volver al portafolio</a>
+    <div class="cta-row"><a class="btn" href="index.html#proyectos">← Volver al portafolio</a><a class="btn" href="proyecto-lakehouse.html">Explorar Data Lakehouse →</a></div>
     <div class="foot-note" style="margin-top:30px;">
       <span>© 2026 Erick Jáuregui Meneses</span>
       <span>Lima, Perú</span>

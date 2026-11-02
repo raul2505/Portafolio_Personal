@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>CV — Erick Raul Jauregui Meneses</title>
+    <meta name="description" content="Consulta y descarga el CV de Erick Raul Jauregui Meneses.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,12 +17,13 @@
 </head>
 
 <body>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-<nav>
+<nav class="site-nav" aria-label="Navegación principal">
     <div class="wrap">
 
-        <a href="index.html" class="brand">
-            <span class="dot"></span>EJM_
+        <a href="index.html" class="brand" aria-label="Erick Jauregui, inicio">
+            <span class="dot" aria-hidden="true"></span>EJM_
         </a>
 
         <ul>
@@ -33,7 +35,7 @@
 
             <li>
                 <a class="navlink" href="index.html#stack">
-                    Stack
+                    Conocimientos
                 </a>
             </li>
 
@@ -48,7 +50,7 @@
 </nav>
 
 
-<main class="cv-page">
+<main class="cv-page" id="contenido" tabindex="-1">
 
     <div class="wrap">
 
@@ -61,7 +63,7 @@
             <h1>Mi CV</h1>
 
             <p class="section-sub">
-                Perfil académico, experiencia, proyectos y conocimientos técnicos.
+                Consulta el documento de mi perfil académico, proyectos y conocimientos técnicos.
             </p>
 
         </div>
@@ -74,9 +76,9 @@
             </a>
 
             <a href="ErickJaureguiCV.pdf"
-               target="_blank"
+               target="_blank" rel="noopener noreferrer"
                class="btn btn-primary">
-                Abrir PDF
+                Abrir PDF <span class="sr-only">(nueva pestaña)</span>
             </a>
 
             <a href="ErickJaureguiCV.pdf"
@@ -88,6 +90,7 @@
         </div>
 
 
+        <p class="note">Si el visor no carga o tu dispositivo no muestra el PDF, utiliza «Abrir PDF» o «Descargar CV».</p>
         <div class="cv-viewer">
 
             <iframe

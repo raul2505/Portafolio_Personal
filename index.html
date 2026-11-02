@@ -1,242 +1,117 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Erick Raul Jauregui Meneses — Ingeniería de Sistemas</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portafolio de Erick Jauregui Meneses, estudiante de Ingeniería de Sistemas de Información en USIL. Proyectos, conocimientos y contacto para prácticas en TI.">
+  <meta name="theme-color" content="#0a0f1a">
+  <title>Erick Raul Jauregui Meneses — Ingeniería de Sistemas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
-
-<nav>
-  <div class="wrap">
-    <a href="#" class="brand"><span class="dot"></span>EJM_</a>
-    <ul>
-      <li><a class="navlink" href="#proyectos">Proyectos</a></li>
-      <li><a class="navlink" href="#stack">Stack</a></li>
-      <li><a class="navlink" href="#contacto">Contacto</a></li>
-    </ul>
-  </div>
-</nav>
-
-<header class="hero">
-  <div class="wrap">
-    <div class="eyebrow">STATUS: PROCESANDO_DATASET<span class="cursor"></span></div>
-
-    <h1 class="name">
-      <span class="scanwrap">ERICK JAUREGUI MENESES<span class="scanline"></span></span>
-    </h1>
-
-    <p class="role">Ingeniería de Sistemas de Información — <strong>USIL, Lima</strong> · Análisis de datos, ETL & Business Intelligence</p>
-
-    <div class="verified mono">// PIPELINE_VALIDADO &nbsp;✓&nbsp; CALIDAD_DATOS: ALTA &nbsp;—&nbsp; LISTO PARA COLABORAR</div>
-
-    <p class="intro">
-      Estudiante de 10.º ciclo de Ingeniería de Sistemas de Información, con experiencia en análisis y procesamiento de
-      datos, procesos ETL, elaboración de indicadores y dashboards para el seguimiento de KPIs. Manejo Excel, SQL,
-      Python, Databricks y Power BI, aplicados a la transformación, automatización y visualización de datos. Me
-      caracterizo por mi pensamiento analítico, aprendizaje continuo, perseverancia y orientación a resultados.
-      Interesado en desarrollarme en análisis de datos, inteligencia de negocios, inteligencia comercial y tecnología.
-      la toma de decisiones.
-
-    </p>
-
-    <div class="cta-row">
-      <a class="btn btn-primary" href="#proyectos">Ver casos de estudio</a>
-      <a class="btn btn-ghost" href="ErickJauregui.html" id="cv-link">Visualizar CV</a>
-      <a class="btn btn-ghost" href="#contacto">Contacto</a>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <nav class="site-nav" aria-label="Navegación principal">
+    <div class="wrap">
+      <a href="index.html" class="brand" aria-label="Erick Jauregui, inicio"><span class="dot" aria-hidden="true"></span>EJM_</a>
+      <ul>
+        <li><a class="navlink" href="#proyectos">Proyectos</a></li>
+        <li><a class="navlink" href="#stack">Conocimientos</a></li>
+        <li><a class="navlink" href="#contacto">Contacto</a></li>
+      </ul>
     </div>
-
-    <div class="telemetry">
-      <div class="tcell">
-        <div class="tlabel">CASO INSIGNIA</div>
-        <div class="tvalue">Data Lakehouse Automotriz</div>
-      </div>
-      <div class="tcell">
-        <div class="tlabel">STACK PRINCIPAL</div>
-        <div class="tvalue">Python · SQL · Power BI · Azure</div>
-      </div>
-      <div class="tcell">
-        <div class="tlabel">ENFOQUE</div>
-        <div class="tvalue">Analítica de datos & BI</div>
-      </div>
-      <div class="tcell">
-        <div class="tlabel">UBICACIÓN</div>
-        <div class="tvalue">Lima, Perú</div>
-      </div>
-    </div>
-  </div>
-</header>
-
-<section id="proyectos">
-  <div class="wrap">
-    <div class="section-head">
-      <div class="section-tag">// CASOS_DE_ESTUDIO</div>
-      <h2>Proyectos</h2>
-      <p class="section-sub">Cada proyecto documentado como un caso: qué problema ataca, qué construí y con qué resultado.</p>
-    </div>
-
-    <div class="case-featured">
-      <div class="case-head">
-        <span class="case-id">CASO_001 // DATA_LAKEHOUSE_AUTOMOTRIZ</span>
-        <span class="badge academic">ANALÍTICA COMERCIAL & CX</span>
-      </div>
-      
-      <h3 class="case-title">Arquitectura Data Lakehouse para analítica comercial y experiencia del cliente</h3>
-      <div class="case-content">
-
-        <div class="case-text">
-            <p class="case-desc">
-            Diseñé una arquitectura Data Lakehouse (Azure Data Factory + Azure Databricks) para
-            integrar 4 fuentes operacionales de una empresa del sector automotriz, migrando de un
-            proceso manual en Excel a un pipeline ETL automatizado. Construí un modelo dimensional
-            en Apache Spark SQL y dashboards en Power BI para el análisis de KPIs comerciales y de
-            experiencia del cliente.
-            </p>
+  </nav>
+  <main id="contenido" tabindex="-1">
+    <header class="hero home-hero">
+      <div class="wrap">
+        <div class="eyebrow">INGENIERÍA DE SISTEMAS DE INFORMACIÓN</div>
+        <h1 class="name">Erick Jauregui<br><span>Meneses</span></h1>
+        <p class="role">Estudiante de 10.º ciclo · <strong>USIL, Lima</strong></p>
+        <p class="availability"><span class="dot" aria-hidden="true"></span>Abierto a oportunidades en TI</p>
+        <p class="intro">Me interesa entender problemas y aplicar tecnología para resolverlos. Tengo conocimientos en programación, bases de datos y herramientas de análisis, y disposición para aprender y desarrollarme en distintas áreas de TI.</p>
+        <p class="intro intro-secondary">Mis proyectos muestran cómo conecto datos, procesos y necesidades del negocio para construir soluciones y comunicar sus resultados.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#proyectos">Explorar proyectos <span aria-hidden="true">↗</span></a>
+          <a class="btn btn-ghost" href="ErickJauregui.html" id="cv-link">Visualizar CV</a>
+          <a class="text-link" href="#contacto">Contactar <span aria-hidden="true">→</span></a>
         </div>
-
-        <div class="case-image">
-            <img src="/img/images.png" alt="Arquitectura Data Lakehouse del proyecto automotriz">
-        </div>
-
-      </div>
-
-      <div class="readout">
-        <div><span class="rk">REGISTROS</span><span class="rv">14,000</span></div>
-        <div><span class="rk">FUENTES</span><span class="rv">4 operacionales</span></div>
-        <div><span class="rk">DIMENSIONES</span><span class="rv">5</span></div>
-        <div><span class="rk">TABLAS DE HECHOS</span><span class="rv">4</span></div>
-      </div>
-
-      <div class="arch">4 fuentes operacionales → Azure Data Factory → Data Lake → Databricks (Spark SQL) → Power BI</div>
-
-      <div class="tags">
-        <span class="tag">Azure Data Factory</span>
-        <span class="tag">Azure Databricks</span>
-        <span class="tag">Apache Spark SQL</span>
-        <span class="tag">Power BI</span>
-        <span class="tag">Modelado dimensional</span>
-        <div class="case-actions">
-        <a class="btn btn-primary" href="proyecto-lakehouse.html">Visualizar proyecto →</a>
+        <div class="telemetry" aria-label="Perfil académico e intereses">
+          <div class="tcell"><div class="tlabel">FORMACIÓN</div><div class="tvalue">Ingeniería de Sistemas de Información</div></div>
+          <div class="tcell"><div class="tlabel">RENDIMIENTO ACADÉMICO</div><div class="tvalue">Quinto superior · USIL</div></div>
+          <div class="tcell"><div class="tlabel">INTERÉS PROFESIONAL</div><div class="tvalue">Distintas áreas de TI</div></div>
+          <div class="tcell"><div class="tlabel">UBICACIÓN</div><div class="tvalue">Lima, Perú</div></div>
         </div>
       </div>
-    </div>
-
-    
-
-     <div class="case-featured" style="margin-top:20px;">
-      <div class="case-head">
-        <span class="case-id">CASO_002 // PEOPLE_ANALYTICS_ROTACION_ENPS</span>
-        <span class="badge bi">BI · RR.HH.</span>
+    </header>
+    <section id="proyectos" aria-labelledby="titulo-proyectos">
+      <div class="wrap">
+        <div class="section-head"><div class="section-tag">01 / PROYECTOS</div><h2 id="titulo-proyectos">Conocimientos puestos en práctica</h2><p class="section-sub">Dos casos para explorar mi forma de analizar problemas, estructurar soluciones y explicar decisiones técnicas.</p></div>
+        <article class="case-featured" aria-labelledby="titulo-lakehouse">
+          <div class="case-head"><span class="case-id">CASO 001 / INTEGRACIÓN DE DATOS</span><span class="badge academic">ACADÉMICO · USIL 2026</span></div>
+          <div class="case-content">
+            <div class="case-text">
+              <h3 class="case-title" id="titulo-lakehouse">Data Lakehouse para el sector automotriz</h3>
+              <p class="case-desc">Proyecto en equipo para integrar ventas, postventa, atención y satisfacción del cliente. Mi aporte se centró en la arquitectura Data Lakehouse y el modelo dimensional, con Azure Data Factory, Databricks y Apache Spark SQL.</p>
+              <p class="case-note">Caso académico basado en Gildemeister, desarrollado con datos sintéticos y cuatro dashboards en Power BI.</p>
+            </div>
+            <figure class="case-image"><img src="img/TO_BE.png" alt="Diagrama de la arquitectura propuesta con Azure Data Factory, Databricks y Power BI" loading="lazy"><figcaption>Arquitectura TO BE del proyecto</figcaption></figure>
+          </div>
+          <div class="readout">
+            <div><span class="rk">REGISTROS SINTÉTICOS</span><span class="rv">14 000</span></div>
+            <div><span class="rk">FUENTES</span><span class="rv">4 datasets</span></div>
+            <div><span class="rk">DIMENSIONES</span><span class="rv">5</span></div>
+            <div><span class="rk">TABLAS DE HECHOS</span><span class="rv">4</span></div>
+          </div>
+          <div class="tags" aria-label="Tecnologías"><span class="tag">Azure Data Factory</span><span class="tag">Databricks</span><span class="tag">Apache Spark SQL</span><span class="tag">Power BI</span><span class="tag">Modelado dimensional</span></div>
+          <div class="case-bottom"><p>Integración de sistemas · Modelado · Trabajo en equipo</p><a class="btn btn-ghost" href="proyecto-lakehouse.html">Ver caso Data Lakehouse <span aria-hidden="true">→</span></a></div>
+        </article>
+        <article class="case-featured" aria-labelledby="titulo-people">
+          <div class="case-head"><span class="case-id">CASO 002 / APOYO A DECISIONES</span><span class="badge bi">EJERCICIO APLICADO</span></div>
+          <div class="case-content">
+            <div class="case-text">
+              <h3 class="case-title" id="titulo-people">People Analytics: rotación y experiencia laboral</h3>
+              <p class="case-desc">Dashboard en Power BI para analizar la rotación y el eNPS de seis equipos. El caso combina modelo de datos, medidas DAX y una matriz cualitativa de priorización para proponer qué equipos atender según su criticidad y el esfuerzo estimado.</p>
+              <p class="case-note">Incluye hallazgos, hipótesis y propuestas de intervención; no representa resultados de acciones ejecutadas.</p>
+            </div>
+            <figure class="case-image"><img src="img/People_Analytics.png" width="1277" height="720" alt="Ilustración de análisis colaborativo con gráficos y paneles de datos" loading="lazy"><figcaption>Ilustración de referencia · informe interactivo en el caso</figcaption></figure>
+          </div>
+          <div class="readout">
+            <div><span class="rk">EQUIPOS ANALIZADOS</span><span class="rv">6</span></div>
+            <div><span class="rk">PERIODO</span><span class="rv">Ene–Sep 2025</span></div>
+            <div><span class="rk">EQUIPO MÁS CRÍTICO</span><span class="rv">Equipo C</span></div>
+            <div><span class="rk">ROTACIÓN TOTAL · C, SEP</span><span class="rv">8.94%</span></div>
+          </div>
+          <div class="tags" aria-label="Tecnologías"><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Excel</span><span class="tag">People Analytics</span><span class="tag">Priorización de datos</span></div>
+          <div class="case-bottom"><p>Análisis de problemas · Criterio analítico · Comunicación</p><a class="btn btn-ghost" href="proyecto-people-analytics.html">Ver caso People Analytics <span aria-hidden="true">→</span></a></div>
+        </article>
       </div>
- 
-      <h3 class="case-title">Rotación y eNPS: matriz de priorización para People Analytics</h3>
- 
-      <div class="case-content">
-        <div class="case-text">
-          <p class="case-desc">
-            Ante un aumento del desgaste y la fuga de talento reportado por los líderes, diseñé
-            un dashboard en Power BI que cruza rotación (voluntaria y total) con eNPS por
-            equipo, mes a mes. El objetivo no era solo mostrar el problema, sino priorizar: qué
-            equipos conviene atender primero según menor esfuerzo de intervención y mayor
-            criticidad del caso.
-          </p>
-        </div>
-        <div class="case-image">
-            <img src="/img/People_Analytics.png" alt="Arquitectura Data Lakehouse del proyecto automotriz">
-        </div>
-        
-      </div>
-
- 
-      <div class="readout">
-        <div><span class="rk">EQUIPOS ANALIZADOS</span><span class="rv">6</span></div>
-        <div><span class="rk">PERIODO</span><span class="rv">Ene–Sep 2025</span></div>
-        <div><span class="rk">EQUIPO MÁS CRÍTICO</span><span class="rv">Equipo C</span></div>
-        <div><span class="rk">ROTACIÓN TOTAL MÁX.</span><span class="rv">8.94%</span></div>
-      </div>
- 
-      <div class="arch">Excel (Rotación_Mensual + Experiencia_Drivers) → Medidas DAX (eNPS, rotación) → Matriz de priorización → Dashboard Power BI</div>
- 
-      <div class="tags">
-        <span class="tag">Power BI</span>
-        <span class="tag">DAX</span>
-        <span class="tag">Excel</span>
-        <span class="tag">People Analytics</span>
-        <span class="tag">Priorización de datos</span>
-        <div class="case-actions1">
-        <a class="btn btn-primary" href="proyecto-people-analytics.html">Visualizar proyecto →</a>
-      </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<section id="stack">
-  <div class="wrap">
-    <div class="section-head">
-      <div class="section-tag">// STACK_TÉCNICO</div>
-      <h2>Herramientas con las que trabajo</h2>
-    </div>
-
-    <div class="skill-groups">
-      <div class="skill-group">
-        <div class="tlabel mono">DATOS & LENGUAJES</div>
-        <div class="chip-row">
-          <span class="chip">Python - Intermedio</span><span class="chip">SQL - Intermedio</span><span class="chip">Pandas</span><span class="chip">Apache Spark SQL</span>
+    </section>
+    <section id="stack" aria-labelledby="titulo-conocimientos">
+      <div class="wrap">
+        <div class="section-head"><div class="section-tag">02 / CONOCIMIENTOS</div><h2 id="titulo-conocimientos">Una base técnica para seguir creciendo</h2><p class="section-sub">Conocimientos de mi formación y herramientas aplicadas en proyectos.</p></div>
+        <div class="skill-groups">
+          <div class="skill-group"><h3>Bases de datos</h3><div class="chip-row"><span class="chip">SQL · Intermedio</span><span class="chip">SQL Server</span><span class="chip">PostgreSQL</span><span class="chip">Modelado dimensional</span></div></div>
+          <div class="skill-group"><h3>Programación y control de versiones</h3><div class="chip-row"><span class="chip">Python · Intermedio</span><span class="chip">Pandas</span><span class="chip">Git / GitHub</span><span class="chip">Apache Spark SQL</span></div></div>
+          <div class="skill-group"><h3>Análisis y visualización de datos</h3><div class="chip-row"><span class="chip">Excel · Intermedio</span><span class="chip">Power BI · Intermedio</span><span class="chip">DAX</span><span class="chip">ETL / ELT</span></div></div>
+          <div class="skill-group"><h3>Sistemas y herramientas tecnológicas</h3><div class="chip-row"><span class="chip">Azure</span><span class="chip">Azure Data Factory</span><span class="chip">Databricks</span><span class="chip">Power Automate</span><span class="chip">Word</span><span class="chip">PowerPoint</span></div></div>
         </div>
       </div>
-      <div class="skill-group">
-        <div class="tlabel mono">CLOUD & BI</div>
-        <div class="chip-row">
-          <span class="chip">Azure</span><span class="chip">Power BI - Intermedio </span><span class="chip">ETL / ELT</span><span class="chip">Databricks</span>
-        </div>
+    </section>
+  </main>
+  <footer id="contacto">
+    <div class="wrap">
+      <div class="section-tag">03 / CONTACTO</div><h2 class="footer-title">Conversemos sobre una oportunidad</h2>
+      <p class="footer-sub">Me interesa aportar mis conocimientos en un equipo de TI, seguir aprendiendo y asumir nuevos retos.</p>
+      <div class="contact-list">
+        <a href="mailto:jauregui25erickr@gmail.com">jauregui25erickr@gmail.com <span aria-hidden="true">↗</span></a>
+        <a href="https://www.linkedin.com/in/erick-raul-jauregui-meneses-576355302/" target="_blank" rel="noopener noreferrer">Erick Jauregui Meneses · LinkedIn <span class="sr-only">(abre en una nueva pestaña)</span><span aria-hidden="true">↗</span></a>
+        <a href="https://wa.me/51955639257" target="_blank" rel="noopener noreferrer">WhatsApp · 955 639 257 <span class="sr-only">(abre en una nueva pestaña)</span><span aria-hidden="true">↗</span></a>
       </div>
-      <div class="skill-group">
-        <div class="tlabel mono">BASES DE DATOS</div>
-        <div class="chip-row">
-          <span class="chip">SQL SERVER</span><span class="chip">PostgreSQL</span>
-        </div>
-      </div>
-      <div class="skill-group">
-    <div class="tlabel mono">MICROSOFT OFFICE</div>
-    <div class="chip-row">
-      <span class="chip">Excel - Intermedio</span>
-      <span class="chip">Word</span>
-      <span class="chip">PowerPoint</span>
-      <span class="chip">Power Automate</span>
+      <div class="foot-note"><span>© 2026 Erick Jáuregui Meneses</span><span>Lima, Perú</span></div>
     </div>
-    </div>
-
-  </div>
-</section>
-
-<footer id="contacto">
-  <div class="wrap">
-    <div class="section-tag">// CONTACTO</div>
-    <h2 class="footer-title">¿Construyamos algo juntos?</h2>
-    <p class="footer-sub">Abierto a oportunidades como Data Analyst y Data Engineer, con interés en análisis de datos, Business Intelligence e ingeniería de datos.</p>
-    <div class="contact-list">
-      <a href="mailto:tu-correo@ejemplo.com">jauregui25erickr@gmail.com</a>
-      <a href="https://www.linkedin.com/in/erick-raul-jauregui-meneses-576355302/" target="_blank">
-    Erick Jauregui Meneses - LinkedIn
-</a>
-      <a href="#">WhatsApp - 955639257</a>
-    </div>
-
-    <div class="foot-note">
-      <span>© 2026 Erick Jáuregui Meneses</span>
-      <span>Lima, Perú</span>
-    </div>
-  </div>
-</footer>
-
-<script src="script.js"></script>
-
+  </footer>
 </body>
 </html>
